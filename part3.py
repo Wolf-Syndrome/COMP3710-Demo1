@@ -15,10 +15,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def psuecode():
-    # iteration 1
+    # iteration 1:
     # get 3 points that create equilaterial triangle, centred on 0, 0
 
-    # iteration 2
+    # iteration 2:
     # get points array and for every point:
     # get the mid 1/3 and create a equilaterial triangle outwards :
     # union four different arrays together:
@@ -28,8 +28,8 @@ def psuecode():
     # - the outward point between the 1/3 point and 2/3 that has a constant length each iteration
     # save new to previous
 
-    # iteration 3 
-    # iteration 2 again
+    # iteration 3:
+    # iteration 2 steps again with previous points
 
     # plot using "plt.fill(x, y)"
     # https://matplotlib.org/stable/gallery/lines_bars_and_markers/fill.html
@@ -53,6 +53,7 @@ def iteration(previous_points, drawing=False):
     angles = torch.atan2(difference[:, 1], difference[:, 0]) + (torch.pi / 3)
     outward_points = first_points + torch.stack((torch.cos(angles)*gap_size, torch.sin(angles)*gap_size), dim=1)    
 
+    # Useful for debug to see the progression of 
     if (drawing):
         plt.scatter(previous_points[:, 0].cpu(), previous_points[:, 1].cpu(), color='b')
         plt.scatter(first_points[:, 0].cpu(), first_points[:, 1].cpu(), color='g')
@@ -88,6 +89,11 @@ def koch_snowflake(level=1):
         return points
 
 
-points = koch_snowflake(9).cpu()
+points = koch_snowflake(4).cpu()
 plt.fill(points[:, :1], points[:, 1:], "c")
 plt.show()
+
+# Possible improvements
+# - Preallocate 4x bigger array instead of combine 2x speed on writes
+# - Use gap size for calculating 1/3 and 2/3 points
+# - Decrease floating points numbers (high ram usage/can't be seen in simulation anyway, currently float64)

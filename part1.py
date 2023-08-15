@@ -26,7 +26,7 @@ def part1():
     y = y.to(device)
 
     z_gaus = torch.exp(-(x**2+y**2)/2.0)
-    z_sine = torch.sin(x+y)
+    z_sine = torch.sin(x)#+y)
     z_gabor_filter = z_gaus.mul(z_sine)
 
     # Show plot
@@ -45,3 +45,7 @@ def part1():
     plt.tight_layout()
     plt.show()
 part1()
+
+
+# Change the Gaussian function into a 2D sine or cosine function (1 Mark)
+# Multiply Sine and Gaussian, what do you get? Gabor Filter (1 Mark)
