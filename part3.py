@@ -39,7 +39,10 @@ def inital_triangle():
     points = [(-0.5, -sqrt(3)/4), (0, sqrt(3)/4), (0.5, -sqrt(3)/4), (-0.5, -sqrt(3)/4)]
     return torch.Tensor(points).to(device)
     
-
+""""
+Perform the next iteration of using previously defined points
+returns gpu tensor, see psuecode() -> iteration 2 for algorithm
+"""
 def iteration(previous_points, drawing=False):
     #difference between 2 points / 3 then add to first
     # diff = next - previous
@@ -61,15 +64,23 @@ def iteration(previous_points, drawing=False):
         plt.scatter(second_points[:, 0].cpu(), second_points[:, 1].cpu(), color='m')
         plt.show()
 
-    test = torch.cat([
+    # Add all together interleaved + last point
+    combined = torch.cat([
         previous_points[:-1, None, :], # previous
         first_points[:, None, :], # first points
         outward_points[:, None, :], # outward
         second_points[:, None, :] # second third points
         ], dim=2).view(-1, 2)
     return torch.cat([
-        test, previous_points[-1:, :]])
+        combined, previous_points[-1:, :]])
 
+"""
+Main Controller for running the koch_snowflake program,
+Will return a gpu loaded tensor with points in order to create koch_snowflake
+Uses iteration to iterate through each iteration of koch
+Parameters:
+    level (int): Which level of koch, with starting triangle being = 1
+"""
 def koch_snowflake(level=1):
     if level < 1:
         raise ValueError

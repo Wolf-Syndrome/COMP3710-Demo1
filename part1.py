@@ -30,10 +30,9 @@ def part1():
     z_gabor_filter = z_gaus.mul(z_sine)
 
     # Show plot
-    if True:
-        plt.imshow(z_gaus.cpu().numpy())
-        plt.tight_layout()
-        plt.show()
+    plt.imshow(z_gaus.cpu().numpy())
+    plt.tight_layout()
+    plt.show()
 
     # Show plot
     plt.imshow(z_sine.cpu().numpy())
