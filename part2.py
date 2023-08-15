@@ -24,7 +24,7 @@ def processFractal(a):
     a = np.uint8(np.clip(a, 0, 255))
     return a
 
-def part2():
+def mandelbrot_default():
     # Use NumPy to create a 2D array of complex numbers on [-2,2]x[-2,2]
     Y, X = np.mgrid[-1.3:1.3:0.005, -2:1:0.005]
 
@@ -99,6 +99,8 @@ def julia():
     y = torch.Tensor(Y)
     zs = torch.complex(x, y).to(device)
     ns = torch.zeros_like(zs).to(device)
+
+    # Difference is c is fixed and doesn't change
     real = 0.274
     imag = -0.008
     realA = torch.full_like(zs, real, dtype=torch.float)
@@ -106,9 +108,9 @@ def julia():
     c = torch.complex(realA, imagA).to(device)
 
 
-    # Mandelbrot Set, check if diverge within n iterations
+    # Juliet Set, check if diverge within n iterations
     for i in range(200):
-        # Compete the next value of z using the formula z new = z^2 + c (c is chosen and zs is previous)
+        # Compete the next value of z using the formula z new = z^2 + c (c is fixed and zs is previous)
         zs_ = zs*zs + c
         # Check divergence, this is 2 for julia set
         not_diverged = torch.abs(zs_) < 2.0
@@ -116,12 +118,12 @@ def julia():
         ns += not_diverged.type(torch.float)
         zs = zs_
     
-    # Show inital image
+    # Show Juliet Set
     plt.imshow(processFractal(ns.cpu().numpy()))
     plt.tight_layout(pad=0)
     plt.show()
 
-#part2()
-#high_res()
+mandelbrot_default()
+high_res()
 julia()
 
